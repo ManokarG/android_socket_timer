@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
+    float tvHeight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +102,18 @@ public class MainActivity extends AppCompatActivity {
         lvMessage.setEnabled(false);
         etMessage.setEnabled(false);
         btnSend.setEnabled(false);
+
+        tvConnectionStatus.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                tvHeight = tvConnectionStatus.getScaleY();
+                if (Build.VERSION.SDK_INT < 16) {
+                    tvConnectionStatus.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    tvConnectionStatus.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,9 +155,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void animateStatusTextView() {
+
+        ViewCompat.setScaleY(tvConnectionStatus, 1.0f);
+
         ViewCompat.animate(tvConnectionStatus)
-                .scaleY(tvConnectionStatus.getY())
-                .setDuration(3000)
+                .alphaBy(0.0f)
+                .setDuration(2)
                 .setListener(new ViewPropertyAnimatorListener() {
                     @Override
                     public void onAnimationStart(View view) {

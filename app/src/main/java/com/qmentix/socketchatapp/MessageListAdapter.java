@@ -30,7 +30,7 @@ public class MessageListAdapter extends ArrayAdapter<MessageModel> {
             @Override
             public void onChanged() {
                 super.onChanged();
-                list.smoothScrollToPosition(getCount());
+//                list.smoothScrollToPosition(getCount());
             }
         });
     }
