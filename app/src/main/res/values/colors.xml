@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="disconnect_bg_color">#90F44336</color>
+    <color name="connect_bg_color">#73af7a</color>
+    <color name="connecting_bg_color">#2196F3</color>
+
 </resources>
