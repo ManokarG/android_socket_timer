@@ -8,11 +8,14 @@ import android.os.Message;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,7 +33,6 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -156,27 +158,35 @@ public class MainActivity extends AppCompatActivity {
 
     private void animateStatusTextView() {
 
-        ViewCompat.setScaleY(tvConnectionStatus, 1.0f);
+        tvConnectionStatus.setVisibility(View.VISIBLE);
 
-        ViewCompat.animate(tvConnectionStatus)
-                .alphaBy(0.0f)
-                .setDuration(2)
-                .setListener(new ViewPropertyAnimatorListener() {
-                    @Override
-                    public void onAnimationStart(View view) {
+        TranslateAnimation animation;
 
-                    }
+        if (tvConnectionStatus.getScaleY() == 1.0f) {
+            animation = new TranslateAnimation(0,0,tvConnectionStatus.getTranslationY(),-tvConnectionStatus.getTranslationY());
+            animation.setDuration(1000);
+        } else {
+            TranslateAnimation animation=new TranslateAnimation(0,0,tvConnectionStatus.getTranslationY(),-tvConnectionStatus.getTranslationY());
+            animation.setDuration(1000);
+        }
 
-                    @Override
-                    public void onAnimationEnd(View view) {
-                        tvConnectionStatus.setVisibility(View.GONE);
-                    }
+        anim.setListener(new ViewPropertyAnimatorListener() {
+            @Override
+            public void onAnimationStart(View view) {
 
-                    @Override
-                    public void onAnimationCancel(View view) {
+            }
 
-                    }
-                });
+            @Override
+            public void onAnimationEnd(View view) {
+                tvConnectionStatus.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(View view) {
+
+            }
+        });
+
     }
 
     private void connectingStatus() {
